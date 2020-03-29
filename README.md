@@ -117,3 +117,5 @@ polyaxon notebook start -u -f polyaxon/notebook.yml
 It takes up to few minutes to build the environment and you can start playing.
 
 Keep in mind that after stopping the notebook, all your progress will be **lost**. Therefore you need to **download** the notebook with your results to the `notebooks` directory.
+
+Finally, remember to `polyaxon notebook stop` at the end, otherwise you will keep resources blocked for everyone.
