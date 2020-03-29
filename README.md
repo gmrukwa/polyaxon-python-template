@@ -5,8 +5,26 @@ Template repository to use Polyaxon in Python within Silesian University of Tech
 ## Repository Structure
 
 ```plaintext
-|- .gitignore               # List of all files that should not be tracked via git
-|- .polyaxonignore          # List of all files that should not be uploaded to Polyaxon
+|- .gitignore                   # Lists all files not tracked via git
+|- .polyaxonignore              # Lists all files not uploaded to Polyaxon
+|- bin                          # Executable scripts for your experiments
+|  |- __init__.py
+|  |- ...
+|  \- minimal.py                # Some experiment script
+|- my_project                   # Reusable components of your current project, shared between the scripts
+|  |- __init__.py
+|  |- ...
+|  \- data.py                   # Module for easy data access
+|- notebooks                    # Jupyter Notebooks you use for exploration / data review
+|  |- quickstart.ipynb          # Initial observations about the data characteristics
+|  |- ...
+|  \- random_forest.ipynb       # Some advanced analysis of results
+|- polyaxon                     # Common place for polyaxonfiles
+|  |- minimal.yml               # Some experiment
+|  |- ...
+|  \- other.yml
+|- requirements-to-freeze.txt   # Direct dependencies for your experiments
+\- requirements.txt             # All the pinned packages versions (from pip freeze)
 ```
 
 ## How to Start
@@ -68,3 +86,34 @@ The steps below assume that you are connected to VPN. We will remove this restri
 Now you can schedule experiments and play with notebooks.
 
 You can conduct all the above steps with Command Line Interface as well. More about this [here](https://docs.polyaxon.com/references/polyaxon-cli/project/).
+
+## Run Experiment
+
+Select one of the files under `polyaxon` directory and run it like:
+
+```bash
+polyaxon run -u -f polyaxon/minimal.yml
+```
+
+You can find your experiment / experiment group in the dashboard.
+
+More details about:
+
+- `polyaxon run` command can be found [here](https://docs.polyaxon.com/references/polyaxon-cli/run/).
+- concepts in Polyaxon (experiment, experiment group, job, etc.) can be found [here](https://docs.polyaxon.com/concepts/architecture/#polyaxon-concepts)
+- how to work with [the experiment](https://docs.polyaxon.com/concepts/experiments/), [the experiment group](https://docs.polyaxon.com/concepts/experiment-groups-hyperparameters-optimization/)
+- [polyaxonfile specification](https://docs.polyaxon.com/references/polyaxonfile-yaml-specification/)
+- [how to disable Polyaxon tracking without changing the code for local experiments](https://docs.polyaxon.com/references/polyaxon-tracking-api/#disabling-polyaxon-tracking-without-changing-the-code)
+- [how to track experiments](https://docs.polyaxon.com/references/polyaxon-tracking-api/experiments/)
+
+## Experiment Interactively
+
+You need to create a polyaxonfile specifying the notebook session and run it like:
+
+```bash
+polyaxon notebook start -u -f polyaxon/notebook.yml
+```
+
+It takes up to few minutes to build the environment and you can start playing.
+
+Keep in mind that after stopping the notebook, all your progress will be **lost**. Therefore you need to **download** the notebook with your results to the `notebooks` directory.

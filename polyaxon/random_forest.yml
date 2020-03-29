@@ -1,0 +1,45 @@
+---
+version: 1
+
+kind: experiment
+
+framework: scikit-learn
+
+tags: [examples]
+
+environment:
+  resources:
+    cpu:
+      # your calculations will be throttled to not exceed
+      limits: 1
+      # that's the minimal amount you will be guaranteed
+      # try to keep that reasonably low to launch multiple experiments in parallel
+      requests: 0.5
+    memory:
+      # your calculations will fail if exceed the memory limit
+      limits: 4000
+      # that's the minimal amount you will be guaranteed
+      # try to keep that reasonably low to launch multiple experiments in parallel
+      requests: 1000
+
+# that's how you should specify parameters in your experiment
+declarations:
+  n_estimators: 3
+  max_features: 3
+  min_samples_leaf: 80
+
+build:
+  image: python:3.7
+  build_steps:
+    # the below are useful for tracking, but you can keep them in requirements.txt
+    - pip install --no-cache-dir -U polyaxon-client==0.6.1
+    - pip install --no-cache-dir -U polyaxon-helper
+    - pip install --no-cache-dir -r requirements.txt
+
+run:
+  # you can specify multiple commands
+  # please keep in mind the trailing '\' in the case of multiline commands
+  cmd: python -u -m bin.random_forest \
+    --n_estimators={{ n_estimators }} \
+    --max_features={{ max_features }} \
+    --min_samples_leaf={{ min_samples_leaf }}
