@@ -1,0 +1,13 @@
+version: 1
+
+kind: notebook
+
+backend: lab
+
+build:
+  image: python:3.7
+  build_steps:
+    - pip install jupyterlab
+    - jupyter notebook --generate-config
+    # Keep this to prevent problems with hanging notebooks
+    - echo "c.NotebookApp.quit_button = False" >> ~/.jupyter/jupyter_notebook_config.py
