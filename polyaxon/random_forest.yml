@@ -33,7 +33,6 @@ build:
   build_steps:
     # the below are useful for tracking, but you can keep them in requirements.txt
     - pip install --no-cache-dir -U polyaxon-client==0.6.1
-    - pip install --no-cache-dir -U polyaxon-helper
     - pip install --no-cache-dir -r requirements.txt
 
 run:

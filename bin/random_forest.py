@@ -2,7 +2,7 @@ import argparse
 import pickle
 import os
 import numpy as np
-from polyaxon_helper import experiment
+from polyaxon_client.tracking import Experiment
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score
 
@@ -24,6 +24,7 @@ args = parser.parse_args()
 
 # Polyaxon
 
+experiment = Experiment()
 experiment.log_params(n_estimators=args.n_estimators,
                       max_features=args.max_features,
                       min_samples_leaf=args.min_samples_leaf)
