@@ -1,0 +1,21 @@
+version: 1.1
+kind: component
+name: rstudio
+run:
+  kind: service
+  rewritePath: true
+  ports:
+    - 8787
+  connections: [workspace]
+  container:
+    env:
+      - name: DISABLE_AUTH
+        value: 'true'
+      - name: ROOT
+        value: 'TRUE'
+      - name: WWW_ROOT_PATH
+        value: '{{ globals.base_url }}'
+      - name: WORKING_DIR
+        value: '/workspace/{{ globals.project_name }}'
+    command: ['sh', '-c', '(mkdir -p /workspace/{{ globals.project_name }} && chown -R 1000:0 /workspace/{{ globals.project_name }} && exec /init)']
+    image: gmrukwa/rstudio

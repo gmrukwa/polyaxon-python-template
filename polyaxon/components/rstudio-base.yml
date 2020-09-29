@@ -1,0 +1,24 @@
+version: 1.1
+kind: component
+name: rstudio
+inputs:
+- name: context
+  description: 'The workspace context, defaults to the current run''s outputs'
+  type: str
+  isOptional: true
+run:
+  kind: service
+  rewritePath: true
+  ports:
+    - 8787
+  container:
+    env:
+      - name: DISABLE_AUTH
+        value: 'true'
+      - name: ROOT
+        value: 'TRUE'
+      - name: WWW_ROOT_PATH
+        value: '{{ globals.base_url }}'
+      - name: WORKING_DIR
+        value: '{{ context or globals.run_outputs_path }}'
+    image: gmrukwa/rstudio

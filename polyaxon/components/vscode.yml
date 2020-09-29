@@ -1,0 +1,27 @@
+version: 1.1
+kind: component
+name: vscode
+
+run:
+  kind: service
+  ports: [8080]
+  rewritePath: true
+  volumes:
+    - name: workspace
+      persistentVolumeClaim:
+        claimName: workspace-pvc
+  init:
+    - container:
+        name: ensure-workspace
+        image: alpine
+        command: ['sh', '-c', '(mkdir -p /workspace/{{ globals.project_name }} && chown -R 1000:0 /workspace/{{ globals.project_name }} && ls -lah /workspace)']
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+  container:
+    image: codercom/code-server
+    workingDir: "/workspace/{{ globals.project_name }}"
+    args: ["--auth", "none", "--disable-telemetry"]
+    volumeMounts:
+    - name: workspace
+      mountPath: /workspace
