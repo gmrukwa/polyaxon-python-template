@@ -1,0 +1,57 @@
+version: 1.1
+kind: component
+name: build
+description: "Build container images with Polyaxon dockerizer"
+tags: ["build"]
+
+inputs:
+- name: repo
+  isOptional: false
+  type: git
+- name: dockerfile
+  isOptional: true
+  type: str
+  value: Dockerfile
+
+outputs:
+- name: destination
+  type: image
+
+plugins:
+  docker: true
+
+run:
+  kind: job
+  connections: ["{{ params.destination.connection }}"]
+  init:
+    - git:
+        url: "{{ params.repo.value.url }}"
+        revision: "{{ params.repo.value.revision }}"
+    - container:
+          name: move-repo
+          image: alpine
+          command: ['sh', '-c', '(cp -R $(find {{ globals.artifacts_path }} | tail -n +2 | grep -v {{ globals.run_artifacts_path }} | head -n 1) {{ globals.artifacts_path }}/repo)']
+          volumeMounts:
+          - name: artifacts-context
+            mountPath: /plx-context/artifacts
+    - container:
+          name: move-dockerfile
+          image: alpine
+          command: ['sh', '-c', '(ls -lah {{ globals.artifacts_path }}/repo && cp {{ globals.artifacts_path }}/repo/{{ params.dockerfile.value }} {{ globals.artifacts_path }}/repo/Dockerfile)']
+          volumeMounts:
+          - name: artifacts-context
+            mountPath: /plx-context/artifacts
+  container:
+    image: polyaxon/polyaxon-dockerizer:1.1.9
+    imagePullPolicy: "Always"
+    args: [
+      "build-and-push",
+      "-c",
+      "{{ globals.artifacts_path }}/repo",
+      "-d",
+      "{{ (connections[params.destination.connection].url + '/' + destination) if (params.destination.connection in connections and connections[params.destination.connection].url) else destination }}",
+      "{{ nocache }}"
+    ]
+    env:
+    - name: PYTHONUNBUFFERED
+      value: "true"
