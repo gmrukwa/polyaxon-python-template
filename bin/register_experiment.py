@@ -83,7 +83,7 @@ def main():
     experiment = Run()
     params = load_values(args.param_file)
     if params:
-        experiment.log_params(**params)
+        experiment.log_inputs(**params)
     metrics = load_values(args.metric_file)
     if metrics:
         experiment.log_metrics(**metrics)
