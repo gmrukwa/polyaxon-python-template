@@ -45,7 +45,9 @@ values, counts = np.histogram(accuracies)
 
 experiment.log_metrics(accuracy_mean=accuracy_mean,
                        accuracy_std=accuracy_std)
-experiment.log_np_histogram('accuracies', values=values, counts=counts)
+for step in range(accuracies.size):
+    experiment.log_metrics(accuracy=accuracies[step], step=step)
+experiment.log_histogram('accuracies', accuracies, bins='auto')
 
 outpath = os.path.join(experiment.get_outputs_path(), 'model.pkl')
 with(open(outpath, 'wb')) as outfile:
