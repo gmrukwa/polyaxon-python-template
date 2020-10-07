@@ -4,3 +4,6 @@ runPatch:
     env:
       - name: POLYAXON_RUN_OUTPUTS_PATH
         value: "{{ globals.run_outputs_path }}"
+      - name: PYTHONUNBUFFERED
+        value: "TRUE"
+    workingDir: "{{ globals.artifacts_path }}/polyaxon-python-template"

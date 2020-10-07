@@ -47,7 +47,6 @@ experiment.log_metrics(accuracy_mean=accuracy_mean,
                        accuracy_std=accuracy_std)
 for step in range(accuracies.size):
     experiment.log_metrics(accuracy=accuracies[step], step=step)
-experiment.log_histogram('accuracies', accuracies, bins='auto')
 
 outpath = os.path.join(experiment.get_outputs_path(), 'model.pkl')
 with(open(outpath, 'wb')) as outfile:
