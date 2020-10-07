@@ -39,12 +39,14 @@ accuracies, classifier = model(X=X,
                                min_samples_leaf=args.min_samples_leaf)
 
 accuracy_mean, accuracy_std = (np.mean(accuracies), np.std(accuracies))
+values, counts = np.histogram(accuracies)
 
 # Polyaxon
 
 experiment.log_metrics(accuracy_mean=accuracy_mean,
-                     accuracies=accuracies,
-                     accuracy_std=accuracy_std)
+                       accuracies=accuracies,
+                       accuracy_std=accuracy_std)
+experiment.log_np_histogram('accuracies', values=values, counts=counts)
 
 outpath = os.path.join(experiment.get_outputs_path(), 'model.pkl')
 with(open(outpath, 'wb')) as outfile:
