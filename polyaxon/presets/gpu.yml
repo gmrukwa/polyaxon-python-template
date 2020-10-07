@@ -1,0 +1,7 @@
+patchStrategy: isnull
+runPatch:
+  container:
+    resources:
+      nvidia.com/gpu:
+        limits: 1
+        requests: 1

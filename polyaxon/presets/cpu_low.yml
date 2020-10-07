@@ -1,0 +1,16 @@
+patchStrategy: isnull
+runPatch:
+  container:
+    resources:
+      cpu:
+        # your calculations will be throttled to not exceed
+        limits: 1
+        # that's the minimal amount you will be guaranteed
+        # try to keep that reasonably low to launch multiple experiments in parallel
+        requests: 0.5
+      memory:
+        # your calculations will fail if exceed the memory limit
+        limits: 4000
+        # that's the minimal amount you will be guaranteed
+        # try to keep that reasonably low to launch multiple experiments in parallel
+        requests: 1000

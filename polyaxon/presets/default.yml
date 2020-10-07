@@ -1,0 +1,6 @@
+patchStrategy: isnull
+runPatch:
+  container:
+    env:
+      - name: POLYAXON_RUN_OUTPUTS_PATH
+        value: "{{ globals.run_outputs_path }}"
