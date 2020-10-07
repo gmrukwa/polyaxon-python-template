@@ -2,12 +2,14 @@ import argparse
 import pickle
 import os
 import numpy as np
-from polyaxon import tracking
+from polyaxon.tracking import Run
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_val_score
 
 from my_project.data import load_data
 
+# Polyaxon
+experiment = Run()
 
 def model(X, y, n_estimators, max_features, min_samples_leaf):
     classifier = RandomForestClassifier(n_estimators=n_estimators,
@@ -27,8 +29,8 @@ args = parser.parse_args()
 # Polyaxon
 # https://polyaxon.com/docs/experimentation/tracking/module/#log_data_ref
 
-tracking.log_data_ref('dataset_X', content=X)
-tracking.log_data_ref('dataset_y', content=y)
+experiment.log_data_ref('dataset_X', content=X)
+experiment.log_data_ref('dataset_y', content=y)
 
 accuracies, classifier = model(X=X,
                                y=y,
@@ -40,15 +42,15 @@ accuracy_mean, accuracy_std = (np.mean(accuracies), np.std(accuracies))
 
 # Polyaxon
 
-tracking.log_metrics(accuracy_mean=accuracy_mean,
+experiment.log_metrics(accuracy_mean=accuracy_mean,
                      accuracies=accuracies,
                      accuracy_std=accuracy_std)
 
-outpath = os.path.join(tracking.get_outputs_path(), 'model.pkl')
+outpath = os.path.join(experiment.get_outputs_path(), 'model.pkl')
 with(open(outpath, 'wb')) as outfile:
     pickle.dump(classifier, outfile)
 
-tracking.log_model(
+experiment.log_model(
     outpath,
     name='top cross validation model',
     framework='sklearn'
