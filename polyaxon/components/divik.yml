@@ -1,0 +1,55 @@
+---
+version: 1.1
+kind: component
+tags: [examples]
+name: divik
+
+# more here: https://polyaxon.com/docs/core/specification/io/
+inputs:
+  - name: config
+    type: path
+  - name: data
+    type: path
+  - name: xy
+    type: path
+    isOptional: true
+
+# outputs:
+#   - name: accuracy_mean
+#     type: float
+#     description: Avg ACC from cross validation
+#   - name: accuracy
+#     type: float
+#     description: ACC from each fold in cross validation
+#   - name: accuracies
+#     type: any
+#     description: Histogram of accuracies in cross validation
+#   - name: accuracy_std
+#     type: float
+#     description: ACC std from cross validation
+#   - name: model
+#     type: artifacts
+#     description: Cross validation top model
+
+run:
+  kind: job
+  connections:
+    - data
+    - kiaed01
+  container:
+    image: gmrukwa/divik
+    command:
+    - /bin/bash
+    - -c
+    args:
+    - |
+        fit-clusters --config="{{ config }}" \
+          --param='load_data.path="{{ data }}"' \
+          {{ """--param='load_xy.path="{0}"'""".format(xy) if xy else "" }} \
+          --param='experiment.destination="{{ globals.run_outputs_path }}"' \
+          --verbose \
+        && python -m bin.register_experiment \
+          --param-file {{ globals.run_outputs_path }}/config.gin \
+          --data-file {{ data }} \
+          {{ "--data-file {0}".format(xy) if xy else "" }} \
+          --metric-file {{ globals.run_outputs_path }}/summary.json

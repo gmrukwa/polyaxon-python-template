@@ -1,0 +1,80 @@
+import divik.cluster
+import divik.core.gin_sklearn_configurables
+import divik.feature_selection
+
+# Macros:
+# ==============================================================================
+clustering = @DiviK()
+feature_extraction = @NoSelector()
+
+# Parameters for clustering/DiviK:
+# ==============================================================================
+clustering/DiviK.distance = 'correlation'
+clustering/DiviK.fast_kmeans = @GAPSearch()
+clustering/DiviK.features_percentage = 1.0
+clustering/DiviK.filter_type = 'gmm'
+clustering/DiviK.kmeans = @DunnSearch()
+clustering/DiviK.minimal_features_percentage = 0.01
+clustering/DiviK.minimal_size = 200
+clustering/DiviK.n_jobs = -1
+clustering/DiviK.normalize_rows = True
+clustering/DiviK.rejection_percentage = None
+clustering/DiviK.rejection_size = 2
+clustering/DiviK.use_logfilters = True
+clustering/DiviK.verbose = True
+
+# Parameters for clustering/DunnSearch:
+# ==============================================================================
+clustering/DunnSearch.drop_unfit = True
+clustering/DunnSearch.inter = 'closest'
+clustering/DunnSearch.intra = 'furthest'
+clustering/DunnSearch.kmeans = @divik.cluster._kmeans._core.KMeans()
+clustering/DunnSearch.max_clusters = 10
+clustering/DunnSearch.method = 'auto'
+clustering/DunnSearch.min_clusters = 2
+clustering/DunnSearch.n_jobs = -1
+clustering/DunnSearch.n_trials = 10
+clustering/DunnSearch.sample_size = 1000
+clustering/DunnSearch.seed = 42
+clustering/DunnSearch.verbose = True
+
+# Parameters for experiment:
+# ==============================================================================
+experiment.exist_ok = True
+experiment.model = @Pipeline()
+experiment.omit_datetime = True
+experiment.steps_that_require_xy = None
+experiment.verbose = True
+
+# Parameters for clustering/GAPSearch:
+# ==============================================================================
+clustering/GAPSearch.drop_unfit = True
+clustering/GAPSearch.kmeans = @divik.cluster._kmeans._core.KMeans()
+clustering/GAPSearch.max_clusters = 2
+clustering/GAPSearch.min_clusters = 1
+clustering/GAPSearch.n_jobs = -1
+clustering/GAPSearch.n_trials = 10
+clustering/GAPSearch.sample_size = 1000
+clustering/GAPSearch.seed = 42
+clustering/GAPSearch.verbose = True
+
+# Parameters for clustering/_core.KMeans:
+# ==============================================================================
+clustering/_core.KMeans.distance = 'correlation'
+clustering/_core.KMeans.init = 'kdtree_percentile'
+clustering/_core.KMeans.leaf_size = 0.01
+clustering/_core.KMeans.max_iter = 100
+clustering/_core.KMeans.n_clusters = 1
+clustering/_core.KMeans.normalize_rows = True
+clustering/_core.KMeans.percentile = 99.0
+
+# Parameters for feature_extraction/NoSelector:
+# ==============================================================================
+# None.
+
+# Parameters for Pipeline:
+# ==============================================================================
+Pipeline.memory = None
+Pipeline.steps = \
+    [('feature_extraction', %feature_extraction), ('clustering', %clustering)]
+Pipeline.verbose = False
