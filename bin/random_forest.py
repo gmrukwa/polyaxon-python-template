@@ -44,7 +44,6 @@ values, counts = np.histogram(accuracies)
 # Polyaxon
 
 experiment.log_metrics(accuracy_mean=accuracy_mean,
-                       accuracies=accuracies,
                        accuracy_std=accuracy_std)
 experiment.log_np_histogram('accuracies', values=values, counts=counts)
 
