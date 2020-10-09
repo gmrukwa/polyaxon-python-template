@@ -34,7 +34,7 @@ run:
       "--NotebookApp.trust_xheaders=True",
       "--NotebookApp.token=",
       "--NotebookApp.base_url={{globals.base_url}}",
-      "--NotebookApp.notebook_dir={{globals.run_outputs_path}}",
+      "--NotebookApp.notebook_dir=/workspace/{{ globals.project_name }}",
       "--LabApp.base_url={{globals.base_url}}"
     ]
     volumeMounts:
