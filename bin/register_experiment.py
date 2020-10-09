@@ -1,6 +1,12 @@
 from argparse import ArgumentParser
+from collections import defaultdict
+import glob
 import json
+import os
+import re
+from typing import List, NamedTuple
 
+from natsort import natsorted
 from polyaxon.tracking import Run
 import yaml
 
@@ -12,6 +18,7 @@ def parse_args():
     parser.add_argument('--metric-file', action='append', default=[])
     parser.add_argument('--data-file', action='append', default=[])
     parser.add_argument('--tag', action='append', default=[])
+    parser.add_argument('--capture-png', action='store_true')
     
     return parser.parse_args()
 
@@ -78,6 +85,32 @@ def load_datasets(fnames):
     )
 
 
+SerialImages = NamedTuple('SerialImages', [
+    ('paths', List[str]),
+    ('name', str)
+])
+
+
+def discover_png(dirname: str):
+    pngs = glob.glob(os.path.join(dirname, '*.png'))
+    fname_pattern = re.compile('.+[_-][0-9]+.[pP][nN][gG]$')
+    suffix_pattern = re.compile('[_-][0-9]+.[pP][nN][gG]$')
+
+    standalones = [p for p in pngs if fname_pattern.fullmatch(p) is None]
+    
+    grouped = [p for p in pngs if p not in standalones]
+    serial = defaultdict(list)
+    for p in natsorted(grouped):
+        name = os.path.split(suffix_pattern.sub('', p))[1]
+        serial[name].append(p)
+    grouped = [
+        SerialImages(paths=paths, name=name)
+        for name, paths in serial.items()
+    ]
+    
+    return standalones + grouped
+
+
 def main():
     args = parse_args()
     experiment = Run()
@@ -91,6 +124,16 @@ def main():
         experiment.log_tags(args.tag)
     for dataset in load_datasets(args.data_file):
         experiment.log_data_ref(**dataset)
+    if args.capture_png:
+        imgs = discover_png(experiment.get_outputs_path())
+        for img in imgs:
+            if isinstance(img, str):
+                experiment.log_image(img)
+            elif isinstance(img, SerialImages):
+                for idx, path in enumerate(img.paths):
+                    experiment.log_image(path, name=img.name, step=idx)
+            else:
+                raise NotImplementedError('We should never get here.')
 
 
 if __name__ == '__main__':

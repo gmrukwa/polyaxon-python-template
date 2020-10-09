@@ -12,24 +12,6 @@ inputs:
     type: path
   - name: xy
     type: path
-    isOptional: true
-
-# outputs:
-#   - name: accuracy_mean
-#     type: float
-#     description: Avg ACC from cross validation
-#   - name: accuracy
-#     type: float
-#     description: ACC from each fold in cross validation
-#   - name: accuracies
-#     type: any
-#     description: Histogram of accuracies in cross validation
-#   - name: accuracy_std
-#     type: float
-#     description: ACC std from cross validation
-#   - name: model
-#     type: artifacts
-#     description: Cross validation top model
 
 run:
   kind: job
@@ -37,19 +19,21 @@ run:
     - data
     - kiaed01
   container:
-    image: gmrukwa/divik
+    image: gmrukwa/divik:2.5.7
     command:
     - /bin/bash
     - -c
     args:
     - |
-        fit-clusters --config="{{ config }}" \
+        apt-get update && apt-get install -y -q gcc python3-dev \
+        && pip install polyaxon==1.1.9 natsort --no-cache-dir \
+        && fit-clusters --config="{{ config }}" \
           --param='load_data.path="{{ data }}"' \
-          {{ """--param='load_xy.path="{0}"'""".format(xy) if xy else "" }} \
+          --param='load_xy.path="{{ xy }}"' \
           --param='experiment.destination="{{ globals.run_outputs_path }}"' \
-          --verbose \
         && python -m bin.register_experiment \
           --param-file {{ globals.run_outputs_path }}/config.gin \
           --data-file {{ data }} \
-          {{ "--data-file {0}".format(xy) if xy else "" }} \
-          --metric-file {{ globals.run_outputs_path }}/summary.json
+          --data-file {{ xy }} \
+          --metric-file {{ globals.run_outputs_path }}/summary.json \
+          --capture-png
