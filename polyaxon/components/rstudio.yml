@@ -43,10 +43,14 @@ inputs:
     - Xcode    
 run:
   kind: service
+  connections:
+    - cache
+    - data
+    - kiaed01
+    - workspace
   rewritePath: true
   ports:
     - 8787
-  connections: [workspace]
   container:
     env:
       - name: DISABLE_AUTH

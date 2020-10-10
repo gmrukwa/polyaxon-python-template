@@ -4,6 +4,10 @@ name: vscode
 
 run:
   kind: service
+  connections:
+    - cache
+    - data
+    - kiaed01
   ports: [8080]
   rewritePath: true
   volumes:

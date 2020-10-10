@@ -13,6 +13,10 @@ inputs:
   options: ["JupyterLab Dark", "JupyterLab Light"]
 run:
   kind: service
+  connections:
+    - cache
+    - data
+    - kiaed01
   ports: [8888]
   volumes:
     - name: workspace
