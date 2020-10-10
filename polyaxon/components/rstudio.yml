@@ -17,5 +17,7 @@ run:
         value: '{{ globals.base_url }}'
       - name: WORKING_DIR
         value: '/workspace/{{ globals.project_name }}'
-    command: ['sh', '-c', '(mkdir -p /workspace/{{ globals.project_name }} && cp -n /template.Rprofile /workspace/{{ globals.project_name }}/.Rprofile && chown -R 1000:0 /workspace/{{ globals.project_name }} && exec /init)']
+      - name: R_APPLY_THEME
+        value: Twilight
+    command: ['sh', '-c', '(mkdir -p /workspace/{{ globals.project_name }} && chown -R 1000:0 /workspace/{{ globals.project_name }} && exec /init)']
     image: gmrukwa/rstudio
