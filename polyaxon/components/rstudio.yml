@@ -1,6 +1,46 @@
 version: 1.1
 kind: component
 name: rstudio
+inputs:
+- name: theme
+  isOptional: true
+  type: str
+  value: "Twilight"
+  options:
+    - Ambiance
+    - Chaos
+    - Chrome
+    - Clouds
+    - Clouds Midnight
+    - Cobalt
+    - Crimson Editor
+    - Dawn
+    - Darcula
+    - Dreamweaver
+    - Eclipse
+    - Gob
+    - Idle Fingers
+    - iPlastic
+    - Katzenmilch
+    - Kr Theme
+    - Material
+    - Merbivore
+    - Merbivore Soft
+    - Mono Industrial
+    - Monokai
+    - Pastel On Dark
+    - Solarized Dark
+    - Solarized Light
+    - SQL Server
+    - Textmate (default)
+    - Tomorrow
+    - Tomorrow Night
+    - Tomorrow Night 80s
+    - Tomorrow Night Blue
+    - Tomorrow Night Bright
+    - Twilight
+    - Vibrant Ink
+    - Xcode    
 run:
   kind: service
   rewritePath: true
@@ -18,6 +58,6 @@ run:
       - name: WORKING_DIR
         value: '/workspace/{{ globals.project_name }}'
       - name: R_APPLY_THEME
-        value: Twilight
+        value: "{{ theme }}"
     command: ['sh', '-c', '(mkdir -p /workspace/{{ globals.project_name }} && chown -R 1000:0 /workspace/{{ globals.project_name }} && exec /init)']
     image: gmrukwa/rstudio
