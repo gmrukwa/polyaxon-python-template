@@ -2,6 +2,12 @@ version: 1.1
 kind: component
 name: vscode
 
+inputs:
+- name: gist
+  isOptional: true
+  type: str
+  value: ""
+
 run:
   kind: service
   connections:
@@ -14,6 +20,8 @@ run:
     - name: workspace
       persistentVolumeClaim:
         claimName: workspace-pvc
+    - name: vscode
+      emptyDir: {}
   init:
     - container:
         name: ensure-workspace
@@ -22,6 +30,26 @@ run:
         volumeMounts:
         - name: workspace
           mountPath: /workspace
+    - container:
+        name: install-sync
+        image: codercom/code-server
+        command:
+        - code-server
+        - --install-extension
+        - shan.code-settings-sync
+        volumeMounts:
+        - name: vscode
+          mountPath: /home/coder/.local/share/code-server
+    - container:
+        name: configure-gist
+        image: codercom/code-server
+        command: ['/bin/bash', '-c']
+        args:
+        - >-
+          echo '{"sync.autoDownload": true, "sync.autoUpload": false, "sync.quietSync": true, "sync.gist": "{{ gist }}", "sync.forceDownload": true}' > ~/.local/share/code-server/User/settings.json
+        volumeMounts:
+        - name: vscode
+          mountPath: /home/coder/.local/share/code-server
   container:
     image: codercom/code-server
     env:
@@ -32,3 +60,5 @@ run:
     volumeMounts:
     - name: workspace
       mountPath: /workspace
+    - name: vscode
+      mountPath: /home/coder/.local/share/code-server
