@@ -6,6 +6,11 @@ inputs:
   isOptional: true
   type: str
   value: jupyter/scipy-notebook
+- name: theme
+  isOptional: true
+  type: str
+  value: "JupyterLab Dark"
+  options: ["JupyterLab Dark", "JupyterLab Light"]
 run:
   kind: service
   ports: [8888]
@@ -24,19 +29,23 @@ run:
   container:
     image: "{{image}}"
     workingDir: "/workspace/{{ globals.project_name }}"
-    command: ["jupyter", "lab"]
-    args: [
-      "--no-browser",
-      "--ip=0.0.0.0",
-      "--port={{globals.ports[0]}}",
-      "--allow-root",
-      "--NotebookApp.allow_origin=*",
-      "--NotebookApp.trust_xheaders=True",
-      "--NotebookApp.token=",
-      "--NotebookApp.base_url={{globals.base_url}}",
-      "--NotebookApp.notebook_dir=/workspace/{{ globals.project_name }}",
-      "--LabApp.base_url={{globals.base_url}}"
-    ]
+    command: ["/bin/bash", "-c"]
+    args:
+    - >-
+      mkdir -p ~/.jupyter/lab/user-settings/@jupyterlab/apputils-extension
+      && (echo '{"theme": "{{theme}}"}' >> ~/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings)
+      && exec jupyter lab
+      --no-browser
+      --ip=0.0.0.0
+      --port={{globals.ports[0]}}
+      --allow-root
+      --NotebookApp.allow_origin=*
+      --NotebookApp.trust_xheaders=True
+      --NotebookApp.token=
+      --NotebookApp.base_url={{globals.base_url}}
+      --NotebookApp.notebook_dir=/workspace/{{ globals.project_name }}
+      --NotebookApp.quit_button=False
+      --LabApp.base_url={{globals.base_url}}
     volumeMounts:
     - name: workspace
       mountPath: /workspace
