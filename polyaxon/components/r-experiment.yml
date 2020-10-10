@@ -33,7 +33,8 @@ run:
       - name: POLYAXON_RUN_OUTPUTS_PATH
         value: "{{ globals.run_outputs_path }}"
     workingDir: '{{ globals.artifacts_path }}/{{ repoName }}'
-    command:
-    - Rscript
-    - "{{ script }}"
-    args: ["{{ arguments }}"]
+    command: ["/bin/bash", "-c"]
+    args:
+    - >-
+      Rscript -e "packrat::restore()"
+      && exec Rscript {{ script }} {{ arguments }}
