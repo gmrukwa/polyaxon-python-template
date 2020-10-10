@@ -33,45 +33,25 @@ Template repository to use Polyaxon in Python within Silesian University of Tech
 
 Skip this if you already used Polyaxon for another project.
 
-1. Contact Polyaxon administrator to create an account for you.
-2. Make `polyaxon.aei.polsl.pl` recognized from your computer. Open the following file in editable mode:
-  - Windows: `C:\Windows\System32\Drivers\etc\hosts`
-  - UNIX: `/etc/hosts`
-and create following entry at the end of the file:
-
-```plaintext
-157.158.109.238 polyaxon.aei.polsl.pl
-```
-
-3. Install `polyaxon-cli==0.6.1` package
+1. Contact Polyaxon administrator to create VPN configuration for you.
+2. Install `polyaxon-cli==1.1.9` package
 
 ```bash
-pip install polyaxon-cli==0.6.1
+pip install polyaxon-cli==1.1.9
 ```
 
-4. Connect to VPN.
-5. Login to your account [here](http://polyaxon.aei.polsl.pl/users/login/).
-6. Setup your Polyaxon CLI installation. Run in command line:
+3. Connect to VPN.
+4. Setup your Polyaxon CLI installation. Run in command line:
 
 ```bash
-polyaxon config set --host=polyaxon.aei.polsl.pl --port=80
+polyaxon config set --host=http://polyaxon-polyaxon-gateway.polyaxon.svc.cluster.local:80
 ```
-
-7. Login to your Polyaxon account with CLI. Run in command line:
-
-```bash
-polyaxon login
-```
-
-You will be asked if the webpage should be opened. Confirm with `y` and copy the token to the clipboard. Paste the token into command line (no characters will appear) and confirm with `Enter`.
 
 ### New Project Setup
 
-The steps below assume that you are connected to VPN. We will remove this restriction soon but due to technical reasons it's not possible at the moment. Also, you need to be logged in to the Polyaxon dashboard.
+The steps below assume that you are connected to VPN.
 
-**Important:** *These steps are required for anyone working on the same project, as the project in Polyaxon is tied to a specific user.*
-
-1. Open the [Polyaxon dashboard](http://polyaxon.aei.polsl.pl/app/)
+1. Open the [Polyaxon dashboard](http://polyaxon-polyaxon-gateway.polyaxon.svc.cluster.local/)
 2. Create new project in the UI:
 
 ![Create new project](https://user-images.githubusercontent.com/1897842/77849332-32a20480-71cb-11ea-973d-7ca3e60c4164.png)
@@ -79,7 +59,49 @@ The steps below assume that you are connected to VPN. We will remove this restri
 2. Open command line
 3. Navigate to the project directory on your computer
 4. Run `polyaxon init <your-project-name>`. The name should be exactly the same as you provided in the UI.
-5. Make sure no big files are present in the project directory. If there are, list them in `.polyaxonignore` file. For data transfer please contact the Polyaxon admin at the moment. This stage is under construction to be more convenient and efficient.
+
+
+```bash
+polyaxon run -f polyaxon/jobs/build_minimal.yml
+```
+
+```bash
+polyaxon run -f polyaxon/jobs/minimal.yml --git-preset
+```
+
+```bash
+polyaxon run -f polyaxon/jobs/build_random_forest.yml
+```
+
+```bash
+polyaxon run -f polyaxon/jobs/random_forest.yml -f polyaxon/presets/default.yml -f polyaxon/presets/cpu_low.yml --git-preset
+```
+
+```bash
+polyaxon run -f polyaxon/jobs/grid_search.yml -f polyaxon/presets/default.yml -f polyaxon/presets/cpu_low.yml --git-preset --eager
+```
+
+```bash
+polyaxon run -f polyaxon/jobs/build_r.yml --git-preset
+```
+
+```bash
+polyaxon run -f polyaxon/jobs/iris_r.yml --git-preset
+```
+
+```bash
+polyaxon run -f polyaxon/components/vscode.yml -P gist=3ad9b36cc07eea65435bc0c13850cc38
+```
+
+```bash
+polyaxon run -f polyaxon/components/rstudio.yml -P theme=Twilight
+```
+
+```bash
+polyaxon run -f polyaxon/components/jupyter.yml -P theme="JupyterLab Dark"
+```
+
+
 6. Run `polyaxon upload` to upload code files.
 7. Run `pip install -r requirements.txt` to install locally all the requirements, so you can debug your code locally. Please remember about the [proper dependencies management](https://www.kennethreitz.org/essays/a-better-pip-workflow) and environment isolation via [`venv`](https://docs.python.org/3/tutorial/venv.html) or `conda`.
 
