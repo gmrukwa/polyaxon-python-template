@@ -1,0 +1,39 @@
+---
+version: 1.1
+kind: component
+tags: [examples]
+name: r-experiment
+
+inputs:
+- name: image
+  isOptional: true
+  value: r-base:4.0.2
+  type: str
+- name: script
+  description: Path of the script to run
+  type: str
+- name: arguments
+  type: str
+  isOptional: true
+  value: ""
+- name: repoName
+  type: str
+  isOptional: true
+  value: polyaxon-python-template
+
+run:
+  kind: job
+  connections:
+    - cache
+    - data
+    - kiaed01
+  container:
+    image: "{{ image }}"
+    env:
+      - name: POLYAXON_RUN_OUTPUTS_PATH
+        value: "{{ globals.run_outputs_path }}"
+    workingDir: '{{ globals.artifacts_path }}/{{ repoName }}'
+    command:
+    - Rscript
+    - "{{ script }}"
+    args: ["{{ arguments }}"]
