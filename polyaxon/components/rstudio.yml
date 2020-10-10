@@ -59,5 +59,7 @@ run:
         value: '/workspace/{{ globals.project_name }}'
       - name: R_APPLY_THEME
         value: "{{ theme }}"
+      - name: POLYAXON_RUN_OUTPUTS_PATH
+        value: "{{ globals.run_outputs_path }}"
     command: ['sh', '-c', '(mkdir -p /workspace/{{ globals.project_name }} && chown -R 1000:0 /workspace/{{ globals.project_name }} && exec /init)']
     image: gmrukwa/rstudio

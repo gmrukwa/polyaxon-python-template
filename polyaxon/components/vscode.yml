@@ -20,6 +20,9 @@ run:
           mountPath: /workspace
   container:
     image: codercom/code-server
+    env:
+      - name: POLYAXON_RUN_OUTPUTS_PATH
+        value: "{{ globals.run_outputs_path }}"
     workingDir: "/workspace/{{ globals.project_name }}"
     args: ["--auth", "none", "--disable-telemetry"]
     volumeMounts:

@@ -29,6 +29,9 @@ run:
   container:
     image: "{{image}}"
     workingDir: "/workspace/{{ globals.project_name }}"
+    env:
+      - name: POLYAXON_RUN_OUTPUTS_PATH
+        value: "{{ globals.run_outputs_path }}"
     command: ["/bin/bash", "-c"]
     args:
     - >-
