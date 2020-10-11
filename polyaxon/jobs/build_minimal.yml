@@ -3,14 +3,14 @@ kind: operation
 name: build_minimal
 
 params:
-  destination:
-    connection: quay-dockerizer
-    value: "plx-test:minimal"
   repo:
     value:
       url: https://github.com/gmrukwa/polyaxon-python-template.git
-      revision: polyaxon-1-update
+      revision: master
   dockerfile: 
     value: docker/base.Dockerfile
+  destination:
+    connection: quay-dockerizer
+    value: "plx-test:minimal"
 
 pathRef: ../components/dockerizer.yml

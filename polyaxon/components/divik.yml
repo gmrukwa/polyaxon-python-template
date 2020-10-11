@@ -16,6 +16,7 @@ inputs:
 run:
   kind: job
   connections:
+    - cache
     - data
     - kiaed01
   container:

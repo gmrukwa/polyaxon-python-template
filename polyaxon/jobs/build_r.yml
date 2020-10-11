@@ -9,7 +9,7 @@ params:
   repo:
     value:
       url: https://github.com/gmrukwa/polyaxon-python-template.git
-      revision: polyaxon-1-update
+      revision: master
   dockerfile: 
     value: docker/r.Dockerfile
 
