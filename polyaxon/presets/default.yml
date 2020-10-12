@@ -1,4 +1,5 @@
-patchStrategy: isnull
+isPreset: true
+patchStrategy: pre_merge
 runPatch:
   container:
     env:

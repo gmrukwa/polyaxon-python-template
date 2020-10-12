@@ -123,12 +123,14 @@ You can setup the theme as the parameter as it may be annoying to work with ligh
 Build yourself the environment:
 
 ```bash
-polyaxon run -f polyaxon/jobs/build_minimal.yml
+polyaxon run -f polyaxon/jobs/build.yml -P destination=plx-test:minimal -P dockerfile=docker/base.Dockerfile --git-preset
 ```
 
 ##### Build Explanation
 
-The file [`polyaxon/jobs/build_minimal.yml`](./polyaxon/jobs/build_minimal.yml) declares, that template repository (`https://github.com/gmrukwa/polyaxon-python-template.git`) gets cloned and `master` branch is checked out. The dockerfile [`docker/base.Dockerfile`](./docker/base.Dockerfile) gets built. Finally, the image is tagged `quay.io/kiiaed/plx-test:minimal` and pushed to [`quay.io`](https://quay.io/repository/kiiaed/plx-test?tab=tags).
+`--git-preset` switch indicates that Polyaxon should clone your repo to to the artifacts path.
+
+The file [`polyaxon/jobs/build.yml`](./polyaxon/jobs/build.yml) declares that the dockerfile [`docker/base.Dockerfile`](./docker/base.Dockerfile) gets built. Finally, the image is tagged `quay.io/kiiaed/plx-test:minimal` and pushed to [`quay.io`](https://quay.io/repository/kiiaed/plx-test?tab=tags).
 
 You can perform any adaptation of the environment within the [`docker/base.Dockerfile`](./docker/base.Dockerfile), commit that and get your environment built. Remember to update the repo / revision.
 
@@ -169,7 +171,7 @@ In the [`polyaxon/jobs/divik.yml`](./polyaxon/jobs/divik.yml) you just specify t
 Run the following command:
 
 ```bash
-polyaxon run -f polyaxon/jobs/build_random_forest.yml
+polyaxon run -f polyaxon/jobs/build.yml -P destination=plx-test:random_forest -P dockerfile=docker/random_forest.Dockerfile --git-preset
 ```
 
 ##### Random Forest Build Explanation
@@ -221,7 +223,7 @@ The R experiment follows similar schema as already shown, but packages are manag
 Just run the following command:
 
 ```bash
-polyaxon run -f polyaxon/jobs/build_r.yml --git-preset
+polyaxon run -f polyaxon/jobs/build.yml -P destination=plx-test:r -P dockerfile=docker/r.Dockerfile --git-preset
 ```
 
 It will build and push simplistic R environment to `quay.io/kiiaed/plx-test:r`.
