@@ -3,6 +3,7 @@ patchStrategy: isnull
 runPatch:
   container:
     resources:
-      nvidia.com/gpu:
-        limits: 1
-        requests: 1
+      limits:
+        nvidia.com/gpu: 1
+      requests:
+        nvidia.com/gpu: 1

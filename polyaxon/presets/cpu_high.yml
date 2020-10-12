@@ -3,15 +3,15 @@ patchStrategy: isnull
 runPatch:
   container:
     resources:
-      cpu:
+      limits:
         # your calculations will be throttled to not exceed
-        limits: 48
-        # that's the minimal amount you will be guaranteed
-        # try to keep that reasonably low to launch multiple experiments in parallel
-        requests: 45
-      memory:
+        cpu: 48
         # your calculations will fail if exceed the memory limit
-        limits: 244000
+        memory: 244000
+      requests:
         # that's the minimal amount you will be guaranteed
         # try to keep that reasonably low to launch multiple experiments in parallel
-        requests: 128000
+        cpu: 45
+        # that's the minimal amount you will be guaranteed
+        # try to keep that reasonably low to launch multiple experiments in parallel
+        memory: 128000
