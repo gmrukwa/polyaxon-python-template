@@ -2,6 +2,27 @@
 
 Template repository to use Polyaxon in Python within Silesian University of Technology infrastructure
 
+## Table of Contents
+
+1. [Repository Structure](#Repository-Structure)
+2. [How to Start](#How-to-Start)
+
+    - [First Time Setup](#First-Time-Setup)
+    - [New Project Setup](#New-Project-Setup)
+
+3. [Experiment Interactively](#Experiment-Interactively)
+
+    - [RStudio](#RStudio)
+    - [Visual Studio Code](#Visual-Studio-Code)
+    - [Jupyter Lab](#Jupyter-Lab)
+
+4. [Batch Experiments](#Batch-Experiments)
+
+    - [Minimal Standalone Python Example](#Minimal-Standalone-Python-Example)
+    - [DiviK Example](#DiviK-Example)
+    - [Random Forest and Grid Search Example](#Random-Forest-and-Grid-Search-Example)
+    - [R Experiment](#R-Experiment)
+
 ## Repository Structure
 
 ```plaintext
