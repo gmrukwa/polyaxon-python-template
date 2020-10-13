@@ -92,6 +92,14 @@ packrat::init('.')
 
 You can read more about package management with `packrat` [here](https://rstudio.github.io/packrat/walkthrough.html). You need `.Rprofile`, `packrat/init.R`, `packrat/packrat.lock` and `packrat/packrat.opts` in the workspace for a stable definition of working packages used by your scripts.
 
+To run an R experiment in the workspace, just use:
+
+```bash
+polyaxon run -f polyaxon/components/r-workspace-experiment.yml -f polyaxon/presets/cpu_medium.yml -P script=<my-script-path> -P args=<my-arguments-as-single-string>
+```
+
+If you save your outputs to the directory indicated by the `POLYAXON_RUN_OUTPUTS_PATH` environment variable, they will get versioned and you will be able to access them from the "Artifacts" tab of the experiment (but not from the workspace).
+
 ### Visual Studio Code
 
 Run the following command:

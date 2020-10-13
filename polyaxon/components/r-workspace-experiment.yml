@@ -1,7 +1,7 @@
 ---
 version: 1.1
 kind: component
-tags: [examples]
+tags: [examples, workspace, r]
 name: r-experiment
 
 inputs:
