@@ -11,7 +11,7 @@ run:
     env:
       - name: POLYAXON_RUN_OUTPUTS_PATH
         value: "{{ globals.run_outputs_path }}"
-    workingDir: "{{ globals.artifacts_path }}/polyaxon-python-template"
+    workingDir: "{{ globals.artifacts_path }}/repo"
     resources:
       cpu:
         # your calculations will be throttled to not exceed

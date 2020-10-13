@@ -30,13 +30,6 @@ component:
     connections: ["quay-dockerizer"]
     init:
       - container:
-            name: move-repo
-            image: alpine
-            command: ['sh', '-c', '(cp -R $(find {{ globals.artifacts_path }} | tail -n +2 | grep -v {{ globals.run_artifacts_path }} | head -n 1) {{ globals.artifacts_path }}/repo)']
-            volumeMounts:
-            - name: artifacts-context
-              mountPath: /plx-context/artifacts
-      - container:
             name: move-dockerfile
             image: alpine
             command: ['sh', '-c', '(ls -lah {{ globals.artifacts_path }}/repo && cp {{ globals.artifacts_path }}/repo/{{ params.dockerfile.value }} {{ globals.artifacts_path }}/repo/Dockerfile)']

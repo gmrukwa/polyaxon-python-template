@@ -16,10 +16,6 @@ inputs:
   type: str
   isOptional: true
   value: ""
-- name: repoName
-  type: str
-  isOptional: true
-  value: polyaxon-python-template
 
 run:
   kind: job
@@ -32,7 +28,7 @@ run:
     env:
       - name: POLYAXON_RUN_OUTPUTS_PATH
         value: "{{ globals.run_outputs_path }}"
-    workingDir: '{{ globals.artifacts_path }}/{{ repoName }}'
+    workingDir: "{{ globals.artifacts_path }}/repo"
     command: ["/bin/bash", "-c"]
     args:
     - >-

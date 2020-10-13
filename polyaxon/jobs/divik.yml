@@ -9,8 +9,4 @@ params:
   xy:
     value: /data/kiaed01/msi/divik-paper/xy.csv
 
-runPatch:
-  container:
-    workingDir: "{{ globals.artifacts_path }}/polyaxon-python-template"
-
 pathRef: ../components/divik.yml

@@ -21,6 +21,7 @@ run:
     - kiaed01
   container:
     image: gmrukwa/divik:2.5.7
+    workingDir: "{{ globals.artifacts_path }}/repo"
     command:
     - /bin/bash
     - -c

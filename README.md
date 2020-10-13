@@ -58,7 +58,7 @@ The steps below assume that you are connected to VPN.
 
 2. Open command line
 3. Navigate to the project directory on your computer
-4. Run `polyaxon init <your-project-name>`. The name should be exactly the same as you provided in the UI.
+4. If you don't use git, run `polyaxon init <your-project-name>`. The name should be exactly the same as you provided in the UI. If you use git, run `polyaxon init <your-project-name> --git-url <repo-url> --git-connection repo`
 
 ## Experiment Interactively
 
@@ -144,7 +144,7 @@ polyaxon run -f polyaxon/jobs/minimal.yml --git-preset
 
 ##### Minimal Standalone Experiment Explanation
 
-Polyaxon downloads `quay.io/kiiaed/plx-test:minimal` image and launches the container with 0.5-1 CPU and 1000-4000MB memory. `--git-preset` switch makes Polyaxon clone the repository that you're in. Thus, you need to pay attention to the `workingDir` setting in the [`polyaxon/jobs/minimal.yml`](./polyaxon/jobs/minimal.yml) - the last part is the name of your repo, so if you are using new repo, you need to change it. The container command is simply `python -u -m bin.minimal`.
+Polyaxon downloads `quay.io/kiiaed/plx-test:minimal` image and launches the container with 0.5-1 CPU and 1000-4000MB memory. `--git-preset` switch makes Polyaxon clone the repository that you're in. The container command is simply `python -u -m bin.minimal`.
 
 ### DiviK Example
 
@@ -158,7 +158,7 @@ polyaxon run -f polyaxon/jobs/divik.yml -f polyaxon/presets/cpu_high.yml -f poly
 
 First, you don't need any build, as DiviK is already provided in the container.
 
-In the [`polyaxon/jobs/divik.yml`](./polyaxon/jobs/divik.yml) you just specify that it should take data from `/data/kiaed01/msi/divik-paper/data.npy`, xy coordinates from `/data/kiaed01/msi/divik-paper/xy.csv` and config from [`config.gin`](./config.gin). These are the most important parameters, that you can track in the repository. You need to reference the full component definition (`pathRef: ../components/divik.yml`, explained below). As we use `--git-preset`, this repository gets cloned and within `runPatch` we specify the `workingDir`.
+In the [`polyaxon/jobs/divik.yml`](./polyaxon/jobs/divik.yml) you just specify that it should take data from `/data/kiaed01/msi/divik-paper/data.npy`, xy coordinates from `/data/kiaed01/msi/divik-paper/xy.csv` and config from [`config.gin`](./config.gin). These are the most important parameters, that you can track in the repository. You need to reference the full component definition (`pathRef: ../components/divik.yml`, explained below).
 
 [`polyaxon/components/divik.yml`](./polyaxon/components/divik.yml) contains the full component definition that gets pasted at the end of the job definition. It specifies inputs, environment image and all the details of the run. The `fit-clusters` script only saves the files to the expected destination. To track the metric values, data hashes, etc., there's a script [`bin/register_experiment.py`](./bin/register_experiment.py). It gets ran at the end, to provide the full tracking.
 

@@ -40,6 +40,7 @@ run:
   kind: job
   container:
     image: quay.io/kiiaed/plx-test:random_forest
+    workingDir: "{{ globals.artifacts_path }}/repo"
     command:
     - python
     args:
