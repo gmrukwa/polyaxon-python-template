@@ -7,7 +7,7 @@ name: r-experiment
 inputs:
 - name: image
   isOptional: true
-  value: r-base:4.0.2
+  value: quay.io/kiiaed/plx-test:r
   type: str
 - name: script
   description: Path of the script to run
