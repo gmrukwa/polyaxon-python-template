@@ -70,6 +70,8 @@ You can of course still use `POLYAXON_RUN_OUTPUTS_PATH` environment variable to 
 
 ### RStudio
 
+#### Command Line
+
 Run the following command:
 
 ```bash
@@ -80,7 +82,60 @@ Sample output:
 
 ![RStudio run](https://user-images.githubusercontent.com/1897842/95683522-1c4e1a00-0bec-11eb-9b62-8fa2aa85c091.png)
 
-It spawns RStudio service within Polyaxon for your current project. If you don't like the default light theme, you can change it to one of the dark themes. When the link appears, you can simply open it and navigate to the running service embedded within Polyaxon UI, or open it fullscreen (the button in the right upper part).
+#### User Interface
+
+You can launch RStudio manually from Polyaxon UI here (without CLI), clicking "New service":
+
+![Launch RStudio from UI](https://user-images.githubusercontent.com/1897842/95891435-5e5e9380-0d85-11eb-9844-9e93c49c318b.png)
+
+Paste the following configuration:
+
+```yaml
+version: 1.1
+kind: operation
+name: rstudio
+component:
+  version: 1.1
+  kind: component
+  name: rstudio
+  inputs:
+  - name: theme
+    isOptional: true
+    type: str
+    value: "Twilight"
+  run:
+    kind: service
+    connections:
+      - cache
+      - data
+      - kiaed01
+      - workspace
+    rewritePath: true
+    ports:
+      - 8787
+    container:
+      env:
+        - name: DISABLE_AUTH
+          value: 'true'
+        - name: ROOT
+          value: 'TRUE'
+        - name: WWW_ROOT_PATH
+          value: '{{ globals.base_url }}'
+        - name: WORKING_DIR
+          value: '/workspace/{{ globals.project_name }}'
+        - name: R_APPLY_THEME
+          value: "{{ theme }}"
+        - name: POLYAXON_RUN_OUTPUTS_PATH
+          value: "{{ globals.run_outputs_path }}"
+      command: ['sh', '-c', '(mkdir -p /workspace/{{ globals.project_name }} && chown -R 1000:0 /workspace/{{ globals.project_name }} && exec /init)']
+      image: gmrukwa/rstudio
+```
+
+Click "Create" and the RStudio service should launch.
+
+#### Usage
+
+RStudio service gets spawned within Polyaxon for your current project. If you don't like the default light theme, you can change it to one of the dark themes. When the link appears, you can simply open it and navigate to the running service embedded within Polyaxon UI, or open it fullscreen (the button in the right upper part).
 
 ![Embedded RStudio](https://user-images.githubusercontent.com/1897842/95683545-4ef81280-0bec-11eb-9c5c-47285f2c1e7b.png)
 
