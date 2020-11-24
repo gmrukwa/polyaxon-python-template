@@ -46,7 +46,9 @@ run:
     args:
     - -m
     - bin.random_forest
-    - "{{ params.n_estimators.as_arg }}"
-    - "{{ params.max_features.as_arg }}"
-    # equivalent
-    - "--min_samples_leaf={{ min_samples_leaf }}"
+    - --n_estimators
+    - "{{ n_estimators }}"
+    - --max_features
+    - "{{ max_features }}"
+    - --min_samples_leaf
+    - "{{ min_samples_leaf }}"

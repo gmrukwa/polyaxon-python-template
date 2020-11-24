@@ -54,18 +54,18 @@ Template repository to use Polyaxon in Python within Silesian University of Tech
 
 Skip this if you already used Polyaxon for another project.
 
-1. Contact Polyaxon administrator to create VPN configuration for you.
-2. Install `polyaxon[numpy]==1.1.9` package
+1. Contact Polyaxon administrator to create an account for you.
+2. Install `polyaxon[numpy]` package
 
 ```bash
-pip install polyaxon[numpy]==1.1.9
+pip install polyaxon[numpy]
 ```
 
-3. Connect to VPN.
-4. Setup your Polyaxon CLI installation. Run in command line:
+3. Setup your Polyaxon CLI installation. Run in command line:
 
 ```bash
-polyaxon config set --host=http://polyaxon-polyaxon-gateway.polyaxon.svc.cluster.local:80
+polyaxon config set --host=https://polyaxon.aei.polsl.pl
+polyaxon login
 ```
 
 ### New Project Setup
