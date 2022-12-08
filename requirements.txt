@@ -1,4 +1,4 @@
-certifi==2019.11.28
+certifi==2022.12.7
 joblib==0.14.1
 natsort==7.0.1
 numpy==1.18.2
